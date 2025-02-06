@@ -186,7 +186,6 @@ If you feel this codebase and the report paper is useful for you, please cite ou
 ## Organizers
 - Yawei Li (yawei.li@vision.ee.ethz.ch)
 - Bin Ren (bin.ren@unitn.it)
-- Nancy Mehta (nancy.mehta@uni-wuerzburg.de)
 - Radu Timofte (Radu.Timofte@uni-wuerzburg.de) 
 
 If you have any question, feel free to reach out the contact persons and direct managers of the NTIRE challenge.
