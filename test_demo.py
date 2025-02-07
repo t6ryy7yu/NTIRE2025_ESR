@@ -22,16 +22,16 @@ def select_model(args, device):
         # DIPNet: Efficiency Distillation and Iterative Pruning for Image Super-Resolution
         # arXiv: https://arxiv.org/pdf/2304.07018
         # Original Code: https://github.com/xiumu00/DIPNet
-        # Ckpts: rlfn_ntire_x4.pth
-        from models.team00_RLFN import RLFN_Prune
-        name, data_range = f"{model_id:02}_RLFN_baseline", 255.0
-        model_path = os.path.join('model_zoo', 'team00_rlfn.pth')
-        model = RLFN_Prune()
+        # Ckpts: DIPNet.pth
+        from models.team00_DIPNet import DIPNet
+        name, data_range = f"{model_id:02}_DIPNet_baseline", 1.0
+        model_path = os.path.join('model_zoo', 'team00_DIPNet.pth')
+        model = DIPNet()
         model.load_state_dict(torch.load(model_path), strict=True)
     elif model_id == 1:
         pass # ---- Put your model here as below ---
         # from models.team01_[your_model_name] import [your_model_name]
-        # name, data_range = f"{model_id:02}_[your_model_name]", 255.0
+        # name, data_range = f"{model_id:02}_[your_model_name]", [255.0 / 1.0] # You can choose either 1.0 or 255.0 based on your own model
         # model_path = os.path.join('model_zoo', 'team01_[your_model_name].pth')
         # model = [your_model_name]()
         # model.load_state_dict(torch.load(model_path), strict=True)
@@ -100,28 +100,6 @@ def forward(img_lq, model, tile=None, tile_overlap=32, scale=4):
 
     return output
 
-def forward_team34(img_lq, model, tile=None, tile_overlap=32, scale=4):
-    if torch.cuda.is_available():
-        img_lq = img_lq.cuda()
-    window_size = 16
-    scale = 4
-    mod_pad_h, mod_pad_w = 0, 0
-    _, _, h, w = img_lq.size()
-    if h % window_size != 0:
-        mod_pad_h = window_size - h % window_size
-    if w % window_size != 0:
-        mod_pad_w = window_size - w % window_size
-    img = F.pad(img_lq, (0, mod_pad_w, 0, mod_pad_h), 'reflect')
-
-    model.eval()
-    with torch.no_grad():
-        output = model(img)
-
-    _, _, h, w = output.size()
-    output = output[:, :, 0:h - mod_pad_h * scale, 0:w - mod_pad_w * scale]    
-    
-    return output
-
 def run(model, model_name, data_range, tile, logger, device, args, mode="test"):
 
     sf = 4
@@ -158,10 +136,7 @@ def run(model, model_name, data_range, tile, logger, device, args, mode="test"):
         # (2) img_sr
         # --------------------------------
         start.record()
-        if args.model_id == 34:
-            img_sr = forward_team34(img_lr, model, tile)
-        else:
-            img_sr = forward(img_lr, model, tile)
+        img_sr = forward(img_lr, model, tile)
         end.record()
         torch.cuda.synchronize()
         results[f"{mode}_runtime"].append(start.elapsed_time(end))  # milliseconds
@@ -198,8 +173,8 @@ def run(model, model_name, data_range, tile, logger, device, args, mode="test"):
         #     results[f"{mode}_ssim_y"].append(ssim_y)
         # print(os.path.join(save_path, img_name+ext))
             
-        # Save Restored Images
-        # util.imsave(img_sr, os.path.join(save_path, img_name+ext))
+        # --- Save Restored Images ---
+        util.imsave(img_sr, os.path.join(save_path, img_name+ext))
 
     results[f"{mode}_memory"] = torch.cuda.max_memory_allocated(torch.cuda.current_device()) / 1024 ** 2
     results[f"{mode}_ave_runtime"] = sum(results[f"{mode}_runtime"]) / len(results[f"{mode}_runtime"]) #/ 1000.0

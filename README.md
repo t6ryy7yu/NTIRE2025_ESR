@@ -5,23 +5,20 @@
 </div>
 
 ## News
-<!-- - :t-rex: July 12th, 2025: The Camera-Ready version of our challenge report is avaliable at this [LINK](https://openaccess.thecvf.com/content/CVPR2025W/NTIRE/papers/Ren_The_Ninth_NTIRE_2025_Efficient_Super-Resolution_Challenge_Report_CVPRW_2025_paper.pdf)!
-- :t-rex: June 25th, 2025: All the solution method and the corresponding checkpoints are uploaded.
-- :t-rex: June 25th, 2025: The report paper can be found via:[https://arxiv.org/abs/2404.10343](https://arxiv.org/abs/2404.10343). Please note that we have correct the the order of "#Params" and "FLOPs" in Table 1 of the report paper. We apiligize for the mistake and thanks for pointing it out from Hongyuan Wang (why5200@stu.xju.edu.cn). -->
-- :t-rex: Our Challenge Repo. is ready!
+- :t-rex: February 8th, 2025: Our Challenge Repo. is ready!
 
 
 ## About the Challenge
 
 In collaboration with the NTIRE workshop, we are hosting a challenge focused on Efficient Super-Resolution ([NTIRE2025_ESR](https://codalab.lisn.upsaclay.fr/competitions/21620)). This involves the task of enhancing the resolution of an input image by a factor of x4, utilizing a set of pre-existing examples comprising both low-resolution and their corresponding high-resolution images. The challenge encompasses one :trophy: main track which consists of three :gem: sub-tracks, i.e., the Inference Runtime, FLOPs (Floating Point Operations Per Second), and Parameters. The baseline method in NTIRE2025_ESR is [DIPNet](https://arxiv.org/pdf/2304.07018) (*Yu, et al, 2023*), the winner of NTIRE2023 Efficient Super-Resolution Challenge. Details are shown below:
 
-- :trophy: Main-track: **Overall Performance** (Runtime, Parameters, FLOPs,) the aim is to obtain a network design / solution with the best overall performance in terms of inference runtime, FLOPS, and parameters on a common GPU (i.e., NVIDIA GeForce RTX 3090 GPU) while being constrained to maintain or improve the PSNR results.
+- :trophy: Main-track: **Overall Performance** (Runtime, Parameters, FLOPs,) the aim is to obtain a network design / solution with the best overall performance in terms of inference runtime, FLOPS, and parameters on a common GPU (i.e., NVIDIA RTX A6000 GPU) while being constrained to maintain or improve the PSNR results.
 
-- :gem: Sub-track 1: **Inference Runtime**, the aim is to obtain a network design / solution with the lowest inference time (runtime) on a common GPU (i.e., NVIDIA GeForce RTX 3090 GPU) while being constrained to maintain or improve over the baseline method DIPNet in terms of number of parameters, FLOPs, and the PSNR result.
+- :gem: Sub-track 1: **Inference Runtime**, the aim is to obtain a network design / solution with the lowest inference time (runtime) on a common GPU (i.e., NVIDIA RTX A6000 GPU) while being constrained to maintain or improve over the baseline method DIPNet in terms of number of parameters, FLOPs, and the PSNR result.
 
-- :gem: Sub-track 2: **FLOPs**, the aim is to obtain a network design / solution with the lowest amount of FLOPs on a common GPU (i.e., NVIDIA GeForce RTX 3090 GPU) while being constrained to maintain or improve the inference runtime, the parameters, and the PSNR results of DIPNet.
+- :gem: Sub-track 2: **FLOPs**, the aim is to obtain a network design / solution with the lowest amount of FLOPs on a common GPU (i.e., NVIDIA RTX A6000 GPU) while being constrained to maintain or improve the inference runtime, the parameters, and the PSNR results of DIPNet.
 
-- :gem: Sub-track 3: **Parameters**, the aim is to obtain a network design / solution with the lowest amount of parameters on a common GPU (i.e., NVIDIA GeForce RTX 3090 GPU) while being constrained to maintain the FLOPs, the inference time (runtime), and the PSNR result of DIPNet.
+- :gem: Sub-track 3: **Parameters**, the aim is to obtain a network design / solution with the lowest amount of parameters on a common GPU (i.e., NVIDIA RTX A6000 GPU) while being constrained to maintain the FLOPs, the inference time (runtime), and the PSNR result of DIPNet.
 
 It's important to highlight that to determine the final ranking and challenge winners, greater weight will be given to teams or participants who demonstrate improvements in more than one aspect (runtime, FLOPs, and parameters) over the provided reference solution.
 
@@ -37,6 +34,10 @@ To ensure fairness in the evaluation process, it is imperative to adhere to the 
 
 The evaluation environments adopted by us is recorded in the `requirements.txt`. After you built your own basic Python setup via either *virtual environment* or *anaconda*, please try to keep similar to it via:
 
+- Step1: install Pytorch first:
+`pip install torch==1.13.1+cu117 torchvision==0.14.1+cu117 torchaudio==0.13.1 --extra-index-url https://download.pytorch.org/whl/cu117`
+
+- Step2: install other libs via:
 ```pip install -r requirements.txt```
 
 or take it as a reference based on your original environments.
@@ -83,13 +84,13 @@ After downloaded all the necessary validate dataset ([DIV2K_LSDIR_valid_LR](http
 3. More detailed example-command can be found in `run.sh` for your convenience.
 
 As a reference, we provide the results of DIPNet (baseline method) below:
-- Average PSNR on DIV2K_LSDIR_valid: 26.96 dB
-- Average PSNR on DIV2K_LSDIR_test: 27.07 dB
-- Number of parameters: 0.317 M
-- Runtime: 13.54 ms (Average runtime of 16.18 ms on DIV2K_LSDIR_valid data and 10.89 ms on DIV2K_LSDIR_test data)
-- FLOPs on an LR image of size 256×256: 19.67 G
+- Average PSNR on DIV2K_LSDIR_valid: 27.00 dB
+- Average PSNR on DIV2K_LSDIR_test: 26.95 dB
+- Number of parameters: 0.243 M
+- Runtime: 11.93 ms (Average runtime of 14.28 ms on DIV2K_LSDIR_valid data and 9.57 ms on DIV2K_LSDIR_test data)
+- FLOPs on an LR image of size 256×256: 14.89 G
 
-    Please note that the results reported above are the average of 5 runs, and each run is conducted on the same device (i.e., NVIDIA GeForce RTX 3090 GPU).
+    Note that the results reported above are the average of 5 runs, and each run is conducted on the same device (i.e., NVIDIA RTX A6000 GPU).
 
 
 ## How to add your model to this baseline?
@@ -115,10 +116,10 @@ As a reference, we provide the results of DIPNet (baseline method) below:
 
 ```python
     from utils.model_summary import get_model_flops, get_model_activation
-    from models.team00_DIPNet import DIPNet_Prune
+    from models.team00_DIPNet import DIPNet
     from fvcore.nn import FlopCountAnalysis
 
-    model = DIPNet_Prune()
+    model = DIPNet()
     
     input_dim = (3, 256, 256)  # set the input dimension
     activations, num_conv = get_model_activation(model, input_dim)
@@ -146,7 +147,7 @@ As a reference, we provide the results of DIPNet (baseline method) below:
 
 After the organizers receive all the submitted codes/checkpoints/results, four steps are adopted for the evaluation:
 
-- Step1: The organizers will execute each model five times to reevaluate all submitted methods on the same device, specifically the NVIDIA GeForce RTX 3090. The average results of these five runs will be documented for each metric.
+- Step1: The organizers will execute each model five times to reevaluate all submitted methods on the same device, specifically the NVIDIA RTX A6000. The average results of these five runs will be documented for each metric.
 - Step2: To ensure PSNR consistency with the baseline method DIPNet, PSNR checks will be conducted for all submitted methods. Any method with a PSNR below 26.90 dB on the DIV2K_LSDIR_valid dataset or less than 26.99 on the DIV2K_LSDIR_test datasets will be excluded from the comparison list for the remaining rankings. 
 - Step3: For the rest, the *Score_Runtime*, *Score_FLOPs*, and the *Score_Params* will be calculated as follows:
 
@@ -161,7 +162,7 @@ After the organizers receive all the submitted codes/checkpoints/results, four s
 ```
     Score_Final = 0.7*Score_Runtime + 0.15*Score_FLOPs + 0.15*Score_Params
 ```
-Let's take the baseline as an example, given the results (i.e., average Runtime_DIPNet = 13.54 ms, FLOPs_DIPNet = 19.67 G, and Params_DIPNet = 0.317 M) of DIPNet, we have:
+Let's take the baseline as an example, given the results (i.e., average Runtime_DIPNet = 11.93 ms, FLOPs_DIPNet = 14.89 G, and Params_DIPNet = 0.243 M) of DIPNet, we have:
 ```
     Score_Runtime = 7.3891
     Score_FLOPs = 7.3891

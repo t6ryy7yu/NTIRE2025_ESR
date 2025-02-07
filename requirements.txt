@@ -113,11 +113,8 @@ tensorboard-data-server==0.7.1
 termcolor==2.4.0
 tifffile==2023.1.23.1
 timm==0.6.12
-torch==1.13.1+cu117
-torchaudio==0.13.1+cu117
 torchmetrics==0.11.4
 torchsummary==1.5.1
-torchvision==0.14.1+cu117
 tqdm==4.66.1
 triton==2.0.0
 tsnecuda==3.0.1
