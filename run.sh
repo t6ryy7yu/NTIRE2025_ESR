@@ -1,18 +1,17 @@
-# --- Evaluation on LSDIR_DIV2K_valid datasets for One Method:
+# --- Evaluation on LSDIR_DIV2K_valid datasets for One Method: ---
 CUDA_VISIBLE_DEVICES=0 python test_demo.py \
     --data_dir [path to your data dir] \
     --save_dir [path to your save dir] \
     --model_id 0
 
-# --- When Test datasets are included (For organizer)
+# --- When LSDIR_DIV2K_valid datasets are included (For organizer!!!) ---
 # CUDA_VISIBLE_DEVICES=0 python test_demo.py \
 #     --data_dir ../ \
 #     --save_dir ../results \
 #     --include_test \
 #     --model_id 0
 
-
-# --- Test all the methods
+# --- Test all the methods ---
 #!/bin/bash
 # DATA_DIR="/Your/Validate/Datasets/Path"
 # SAVE_DIR="./results"

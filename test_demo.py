@@ -466,8 +466,8 @@ def run(model, model_name, data_range, tile, logger, device, args, mode="test"):
 
 def main(args):
 
-    utils_logger.logger_info("NTIRE2024-EfficientSR", log_path="NTIRE2024-EfficientSR.log")
-    logger = logging.getLogger("NTIRE2024-EfficientSR")
+    utils_logger.logger_info("NTIRE2025-EfficientSR", log_path="NTIRE2025-EfficientSR.log")
+    logger = logging.getLogger("NTIRE2025-EfficientSR")
 
     # --------------------------------
     # basic settings
@@ -517,7 +517,7 @@ def main(args):
         # flops = flops/10**9
         # logger.info("{:>16s} : {:<.4f} [G]".format("FLOPs", flops))
 
-        # fvcore is used in NTIRE2024_ESR for FLOPs calculation
+        # fvcore is used in NTIRE2025_ESR for FLOPs calculation
         input_fake = torch.rand(1, 3, 256, 256).to(device)
         flops = FlopCountAnalysis(model, input_fake).total()
         flops = flops/10**9
@@ -559,11 +559,11 @@ def main(args):
 
 
 if __name__ == "__main__":
-    parser = argparse.ArgumentParser("NTIRE2024-EfficientSR")
+    parser = argparse.ArgumentParser("NTIRE2025-EfficientSR")
     parser.add_argument("--data_dir", default="../", type=str)
     parser.add_argument("--save_dir", default="../results", type=str)
     parser.add_argument("--model_id", default=0, type=int)
-    parser.add_argument("--include_test", action="store_true", help="Inference on the DIV2K_LSDIR test set")
+    parser.add_argument("--include_test", action="store_true", help="Inference on the `DIV2K_LSDIR_test` set")
     parser.add_argument("--ssim", action="store_true", help="Calculate SSIM")
 
     args = parser.parse_args()
