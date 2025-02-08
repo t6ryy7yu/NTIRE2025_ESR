@@ -11,22 +11,21 @@ from utils.model_summary import get_model_activation, get_model_flops
 from utils import utils_logger
 from utils import utils_image as util
 
-from torch.nn import functional as F # For team34
 
 def select_model(args, device):
     # Model ID is assigned according to the order of the submissions.
     # Different networks are trained with input range of either [0,1] or [0,255]. The range is determined manually.
     model_id = args.model_id
     if model_id == 0:
-        # Baseline: Winner of the NTIRE 2023 Efficient SR Challenge 
-        # DIPNet: Efficiency Distillation and Iterative Pruning for Image Super-Resolution
-        # arXiv: https://arxiv.org/pdf/2304.07018
-        # Original Code: https://github.com/xiumu00/DIPNet
-        # Ckpts: DIPNet.pth
-        from models.team00_DIPNet import DIPNet
-        name, data_range = f"{model_id:02}_DIPNet_baseline", 1.0
-        model_path = os.path.join('model_zoo', 'team00_DIPNet.pth')
-        model = DIPNet()
+        # Baseline: The 1st Place of the `Overall Performance`` of the NTIRE 2023 Efficient SR Challenge 
+        # Edge-enhanced Feature Distillation Network for Efficient Super-Resolution
+        # arXiv: https://arxiv.org/pdf/2204.08759
+        # Original Code: https://github.com/icandle/EFDN
+        # Ckpts: EFDN_gv.pth
+        from models.team00_EFDN import EFDN
+        name, data_range = f"{model_id:02}_EFDN_baseline", 1.0
+        model_path = os.path.join('model_zoo', 'team00_EFDN.pth')
+        model = EFDN()
         model.load_state_dict(torch.load(model_path), strict=True)
     elif model_id == 1:
         pass # ---- Put your model here as below ---
@@ -174,7 +173,7 @@ def run(model, model_name, data_range, tile, logger, device, args, mode="test"):
         # print(os.path.join(save_path, img_name+ext))
             
         # --- Save Restored Images ---
-        util.imsave(img_sr, os.path.join(save_path, img_name+ext))
+        # util.imsave(img_sr, os.path.join(save_path, img_name+ext))
 
     results[f"{mode}_memory"] = torch.cuda.max_memory_allocated(torch.cuda.current_device()) / 1024 ** 2
     results[f"{mode}_ave_runtime"] = sum(results[f"{mode}_runtime"]) / len(results[f"{mode}_runtime"]) #/ 1000.0
