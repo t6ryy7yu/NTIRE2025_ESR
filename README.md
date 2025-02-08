@@ -27,7 +27,7 @@ To ensure fairness in the evaluation process, it is imperative to adhere to the 
     Refrain from training your model using the validation LR images, validation HR images, or testing LR images. The test datasets will not be disclosed, making PSNR performance on the test datasets a crucial factor in the final evaluation.
 
 - **PSNR Threshold and Ranking Eligibility:**
-    Methods with a PSNR below the specified threshold (i.e., 26.90 dB on DIV2K_LSDIR_valid and, 26.99 dB on DIV2K_LSDIR_test) will not be considered for the subsequent ranking process. It is essential to meet the minimum PSNR requirement to be eligible for further evaluation and ranking.
+    Methods with a PSNR below the specified threshold (i.e., 26.90 dB on DIV2K_LSDIR_valid and, 26.95 dB on DIV2K_LSDIR_test) will not be considered for the subsequent ranking process. It is essential to meet the minimum PSNR requirement to be eligible for further evaluation and ranking.
 
 
 ## The Environments
@@ -148,7 +148,7 @@ As a reference, we provide the results of DIPNet (baseline method) below:
 After the organizers receive all the submitted codes/checkpoints/results, four steps are adopted for the evaluation:
 
 - Step1: The organizers will execute each model five times to reevaluate all submitted methods on the same device, specifically the NVIDIA RTX A6000. The average results of these five runs will be documented for each metric.
-- Step2: To ensure PSNR consistency with the baseline method DIPNet, PSNR checks will be conducted for all submitted methods. Any method with a PSNR below 26.90 dB on the DIV2K_LSDIR_valid dataset or less than 26.99 on the DIV2K_LSDIR_test datasets will be excluded from the comparison list for the remaining rankings. 
+- Step2: To ensure PSNR consistency with the baseline method DIPNet, PSNR checks will be conducted for all submitted methods. Any method with a PSNR below 26.90 dB on the DIV2K_LSDIR_valid dataset or less than 26.95 on the DIV2K_LSDIR_test datasets will be excluded from the comparison list for the remaining rankings. 
 - Step3: For the rest, the *Score_Runtime*, *Score_FLOPs*, and the *Score_Params* will be calculated as follows:
 
 ```
